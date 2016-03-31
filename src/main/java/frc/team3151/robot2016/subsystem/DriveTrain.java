@@ -2,6 +2,7 @@ package frc.team3151.robot2016.subsystem;
 
 import edu.wpi.first.wpilibj.RobotDrive;
 import frc.team3151.robot2016.Constants;
+import frc.team3151.robot2016.RobotModule;
 import frc.team3151.robot2016.util.DeadzoneUtil;
 import frc.team3151.robot2016.util.TalonUtil;
 
@@ -24,12 +25,24 @@ public final class DriveTrain {
         left = DeadzoneUtil.applyDeadzone(left);
         right = DeadzoneUtil.applyDeadzone(right);
 
-        if (left - lastLeft > Constants.DRIVE_TRAIN_RAMPING_AMOUNT) {
-            left = lastLeft + Constants.DRIVE_TRAIN_RAMPING_AMOUNT;
+        if (left > 0) {
+            if (left - lastLeft > Constants.DRIVE_TRAIN_RAMPING_AMOUNT) {
+                left = lastLeft + Constants.DRIVE_TRAIN_RAMPING_AMOUNT;
+            }
+        } else if (left < 0) {
+            if (left - lastLeft < -Constants.DRIVE_TRAIN_RAMPING_AMOUNT) {
+                left = lastLeft + -Constants.DRIVE_TRAIN_RAMPING_AMOUNT;
+            }
         }
 
-        if (right - lastRight > Constants.DRIVE_TRAIN_RAMPING_AMOUNT) {
-            right = lastRight + Constants.DRIVE_TRAIN_RAMPING_AMOUNT;
+        if (right > 0) {
+            if (right - lastRight > Constants.DRIVE_TRAIN_RAMPING_AMOUNT) {
+                right = lastRight + Constants.DRIVE_TRAIN_RAMPING_AMOUNT;
+            }
+        } else if (right < 0) {
+            if (right - lastRight < -Constants.DRIVE_TRAIN_RAMPING_AMOUNT) {
+                right = lastRight + -Constants.DRIVE_TRAIN_RAMPING_AMOUNT;
+            }
         }
 
         driveAuto(left, right);
