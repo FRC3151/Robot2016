@@ -7,15 +7,9 @@ import frc.team3151.robot2016.util.TalonUtil;
 public final class Hopper {
 
     private final SpeedController hopperMotor;
-    private final SpeedController pickUpMotor;
 
     public Hopper() {
         hopperMotor = TalonUtil.talon(Constants.HOPPER_CAN_ID);
-        pickUpMotor = TalonUtil.talon(Constants.PICK_UP_CAN_ID);
-    }
-
-    public void setPickupActive(boolean active) {
-        pickUpMotor.set(active ? Constants.HOPPER_PICKUP_SPEED : 0);
     }
 
     public void setHopperState(State state) {

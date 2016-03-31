@@ -27,7 +27,6 @@ public final class RobotModule extends IterativeModule {
     @Override
     public void teleopPeriodic() {
         driveTrain.driveTeleop(driver.leftSide(), driver.rightSide());
-        hopper.setPickupActive(operator.pickupActive());
         hopper.setHopperState(operator.hopperState());
     }
 
