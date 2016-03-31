@@ -1,56 +1,49 @@
 package frc.team3151.robot2016;
 
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import frc.team3151.robot2016.subsystem.DriveTrain;
 import frc.team3151.robot2016.subsystem.Driver;
+import frc.team3151.robot2016.subsystem.Hopper;
 import frc.team3151.robot2016.subsystem.Operator;
-import frc.team3151.robot2016.subsystem.Shooter;
-import frc.team3151.robot2016.util.DeadzoneUtil;
-import jaci.openrio.toast.lib.log.Logger;
 import jaci.openrio.toast.lib.module.IterativeModule;
 
 public final class RobotModule extends IterativeModule {
 
-    private Logger logger;
-    private PowerDistributionPanel pdp;
     private Driver driver;
     private Operator operator;
     private DriveTrain driveTrain;
-    private Shooter shooter;
+    private Hopper hopper;
+
+    private long autoStarted = 0;
 
     @Override
     public void robotInit() {
-        logger = new Logger("Robot2016", Logger.ATTR_DEFAULT);
-        pdp = new PowerDistributionPanel(0);
         driver = new Driver();
         operator = new Operator();
         driveTrain = new DriveTrain();
-        shooter = new Shooter();
-
-        logger.info("Booted up!");
+        hopper = new Hopper();
     }
 
     @Override
     public void teleopPeriodic() {
-        driveTrain.drive(DeadzoneUtil.applyDeadzone(driver.leftSide()), DeadzoneUtil.applyDeadzone(driver.rightSide()));
-        shooter.setPickupActive(operator.pickupActive());
+        driveTrain.driveTeleop(driver.leftSide(), driver.rightSide());
+        hopper.setPickupActive(operator.pickupActive());
+        hopper.setHopperState(operator.hopperState());
+    }
 
-        if (operator.hopperActive()) {
-            shooter.setHopperActive(1);
-        } else if (operator.hopperReverse()) {
-            shooter.setHopperActive(-1);
-        } else {
-            shooter.setHopperActive(0);
-        }
-
-        logger.info("Current=" + pdp.getTotalCurrent());
-        logger.info("Energy=" + pdp.getTotalEnergy());
-        logger.info("Power=" + pdp.getTotalPower());
+    @Override
+    public void autonomousInit() {
+        autoStarted = System.currentTimeMillis();
     }
 
     @Override
     public void autonomousPeriodic() {
-        driveTrain.drive(0, 0);
+        long autoDuration = System.currentTimeMillis() - autoStarted;
+
+        if (autoDuration < Constants.AUTO_DRIVE_TIME_MS) {
+            driveTrain.driveAuto(Constants.AUTO_DRIVE_SPEED, Constants.AUTO_DRIVE_SPEED);
+        } else {
+            driveTrain.driveAuto(0, 0);
+        }
     }
 
     @Override

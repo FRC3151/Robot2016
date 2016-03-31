@@ -15,12 +15,14 @@ public final class Operator {
         return controller.x();
     }
 
-    public boolean hopperActive() {
-        return controller.a();
-    }
-
-    public boolean hopperReverse() {
-        return controller.b();
+    public Hopper.State hopperState() {
+        if (controller.a()) {
+            return Hopper.State.FORWARD;
+        } else if (controller.b()) {
+            return Hopper.State.REVERSE;
+        } else {
+            return Hopper.State.NEUTRAL;
+        }
     }
 
 }
