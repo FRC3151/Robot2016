@@ -11,10 +11,6 @@ public final class Operator {
         this.controller = new XboxController(Constants.OPERATOR_XBOX_ID);
     }
 
-    public boolean pickupActive() {
-        return controller.x();
-    }
-
     public Hopper.State hopperState() {
         if (controller.a()) {
             return Hopper.State.FORWARD;

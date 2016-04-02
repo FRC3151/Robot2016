@@ -4,7 +4,6 @@ import frc.team3151.robot2016.subsystem.DriveTrain;
 import frc.team3151.robot2016.subsystem.Driver;
 import frc.team3151.robot2016.subsystem.Hopper;
 import frc.team3151.robot2016.subsystem.Operator;
-import jaci.openrio.toast.lib.log.Logger;
 import jaci.openrio.toast.lib.module.IterativeModule;
 
 public final class RobotModule extends IterativeModule {
